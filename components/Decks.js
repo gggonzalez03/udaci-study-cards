@@ -46,32 +46,51 @@ class Decks extends Component {
           transparent={true}
         >
           <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors["Blue"].dark }}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors["BlueGrey"].dark }}
           >
+            <View
+              style={{
+                position: 'absolute',
+                top: 22,
+                right: 8,
+              }}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.setAddDeckFormVisible(false)
+                }}
+              >
+                <Entypo name='circle-with-cross' size={28} style={{
+                  color: 'white',
+                  backgroundColor: 'transparent',
+                  margin: 8
+                }} />
+              </TouchableWithoutFeedback>
+            </View>
             <View
               style={{}}
             >
               <Text style={{
-                fontSize: 24,
-                color: colors["Blue"].extraLight,
+                fontSize: 48,
+                color: colors["BlueGrey"].extraLight,
                 margin: 4,
               }}>New Deck Title
                 </Text>
               <TextInput
                 style={{
                   fontSize: 24,
-                  color: colors["Blue"].extraLight,
+                  color: colors["BlueGrey"].extraLight,
                   borderWidth: 1, borderRadius: 5,
-                  borderColor: colors["Blue"].extraLight,
+                  borderColor: colors["BlueGrey"].extraLight,
                   margin: 4,
                   padding: 4,
                 }}
+                autoFocus={true}
               ></TextInput>
               <TouchableOpacity
                 style={{
                   borderWidth: 1,
                   borderRadius: 10,
-                  borderColor: colors["Blue"].extraLight,
+                  borderColor: colors["BlueGrey"].extraLight,
                   margin: 4,
                   padding: 4,
                   alignItems: 'center'
@@ -83,7 +102,7 @@ class Decks extends Component {
                   this.setAddDeckFormVisible(false)
                 }}
               >
-                <Text style={{ fontSize: 24, color: colors["Blue"].extraLight }}>Create</Text>
+                <Text style={{ fontSize: 24, color: colors["BlueGrey"].extraLight }}>Create</Text>
               </TouchableOpacity>
             </View>
           </View>
