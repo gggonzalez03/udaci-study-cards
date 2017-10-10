@@ -12,7 +12,7 @@ const MainNavigator = StackNavigator({
   Deck: {
     screen: Deck,
     navigationOptions: ({navigation}) => ({
-      headerTitle: `${navigation.state.params.headerTitle}`,
+      headerTitle: `${navigation.state.params.deck.name}`,
     }),
   }
 });

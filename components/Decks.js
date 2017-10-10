@@ -30,7 +30,7 @@ class Decks extends Component {
     })
   }
   goToDeckView = (deck) => {
-    this.props.navigation.navigate('Deck', { headerTitle: deck.name })
+    this.props.navigation.navigate('Deck', { deck: deck })
   }
   setAddDeckFormVisible = (visible) => {
     this.setState({
