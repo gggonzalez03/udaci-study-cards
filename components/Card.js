@@ -1,52 +1,89 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
 import colors from '../helpers/colors'
 
 class Card extends Component {
   state = {
-
+    flip: new Animated.Value(0),
+    padding: new Animated.Value(8),
+    front: true,
+  }
+  flipCard = () => {
+    // Control the flipValue here so that the flip can be toggled
+    // back and front
+    let flipEndValue = 180
+    if (!this.state.front)
+      flipEndValue = 0
+    Animated.sequence([
+      Animated.timing(this.state.padding, {
+        toValue: 0,
+        duration: 100,
+      }),
+      Animated.timing(this.state.flip, {
+        toValue: flipEndValue,
+        duration: 300,
+      }),
+      Animated.timing(this.state.padding, {
+        toValue: 8,
+        duration: 100,
+      }),
+    ]).start(() => this.setState({
+      front: !this.state.front
+    }))
   }
   render() {
     const { style, deck, card } = this.props
     return (
-      <View
-        style={[styles.container, style]}
+      <Animated.View
+        style={[style, styles.container, { padding: this.state.padding }]}
       >
-        <Text
-          style={styles.cardCount}
-        >{card.index}/{deck.cards.length}</Text>
-        <View
-          style={{ flex: 1, justifyContent: 'center' }}
+        <Animated.View
+          style={[styles.card, {
+            flex: 1,
+            backgroundColor: colors[deck.color].medium,
+            transform: [
+              { rotateY: this.state.flip.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }
+            ],
+          }]}
         >
           <Text
-            style={styles.question}
-          >{card.item.question}</Text>
-          <TouchableOpacity
-            style={styles.flipButton}>
-            <Text
-              style={[styles.flipButtonLabel, { color: colors[deck.color].dark }]}
-            >Show Answer</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={styles.buttonContainer}
-        >
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
+            style={styles.cardCount}
+          >{card.index}/{deck.cards.length}</Text>
+          <View
+            style={{ flex: 1, justifyContent: 'center' }}
           >
             <Text
-              style={styles.buttonLabel}
-            >Incorrect</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
+              style={styles.question}
+            >{card.item.question}</Text>
+            <TouchableOpacity
+              style={styles.flipButton}
+              onPress={() => this.flipCard()}
+            >
+              <Text
+                style={[styles.flipButtonLabel, { color: colors[deck.color].dark }]}
+              >Show Answer</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={styles.buttonContainer}
           >
-            <Text
-              style={styles.buttonLabel}
-            >Correct</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
+            >
+              <Text
+                style={styles.buttonLabel}
+              >Incorrect</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
+            >
+              <Text
+                style={styles.buttonLabel}
+              >Correct</Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      </Animated.View>
     )
   }
 }
@@ -55,8 +92,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 16,
-    padding: 16,
+    padding: 8,
     margin: 16,
+  },
+  card: {
+    borderRadius: 16,
+    padding: 16,
   },
   cardCount: {
     color: 'white',

@@ -36,7 +36,6 @@ class Deck extends Component {
               deck={deck}
               card={card}
               style={{
-                backgroundColor: colors[deck.color].medium,
                 width: width-32
               }}
             ></Card>
