@@ -18,11 +18,9 @@ class Card extends Component {
         <View
           style={{ flex: 1, justifyContent: 'center' }}
         >
-          <View>
-            <Text
-              style={styles.question}
-            >This is the question</Text>
-          </View>
+          <Text
+            style={styles.question}
+          >This is the question</Text>
           <TouchableOpacity
             style={styles.flipButton}>
             <Text
@@ -34,14 +32,14 @@ class Card extends Component {
           style={styles.buttonContainer}
         >
           <TouchableOpacity
-            style={[styles.button, { flex: 1, backgroundColor: colors[deck.color].dark }]}
+            style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
           >
             <Text
               style={styles.buttonLabel}
             >Incorrect</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.button, { flex: 1, backgroundColor: colors[deck.color].dark }]}
+            style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
           >
             <Text
               style={styles.buttonLabel}
@@ -55,6 +53,7 @@ class Card extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     borderRadius: 16,
     padding: 16,
     margin: 16,
@@ -77,12 +76,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
-    flex: 1,
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between'
   },
   button: {
-    alignSelf: 'flex-end',
+    flex: 1,
     padding: 8,
     margin: 8,
     borderRadius: 8,

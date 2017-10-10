@@ -22,7 +22,9 @@ class Deck extends Component {
   render() {
     const deck = this.props.navigation.state.params.deck
     return (
-      <View>
+      <View
+        style={{ flex: 1 }}
+      >
         <Card
           deck={deck}
           style={{
