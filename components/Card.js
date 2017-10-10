@@ -7,20 +7,20 @@ class Card extends Component {
 
   }
   render() {
-    const { style, deck } = this.props
+    const { style, deck, card } = this.props
     return (
       <View
         style={[styles.container, style]}
       >
         <Text
           style={styles.cardCount}
-        >0/20</Text>
+        >{card.index}/{deck.cards.length}</Text>
         <View
           style={{ flex: 1, justifyContent: 'center' }}
         >
           <Text
             style={styles.question}
-          >This is the question</Text>
+          >{card.item.question}</Text>
           <TouchableOpacity
             style={styles.flipButton}>
             <Text

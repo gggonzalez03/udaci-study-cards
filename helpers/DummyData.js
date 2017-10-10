@@ -18,6 +18,10 @@ export const userDecks = {
       {
         question: "This is the question",
         answer: "This is the answer"
+      },
+      {
+        question: "This is the question",
+        answer: "This is the answer"
       }
     ],
     color: 'Green',

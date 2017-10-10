@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, FlatList, Dimensions } from 'react-native'
 import Card from './Card'
 import colors from '../helpers/colors'
 
@@ -21,16 +21,27 @@ class Deck extends Component {
   }
   render() {
     const deck = this.props.navigation.state.params.deck
+    const {height, width} = Dimensions.get('window')
     return (
       <View
         style={{ flex: 1 }}
       >
-        <Card
-          deck={deck}
-          style={{
-            backgroundColor: colors[deck.color].medium,
-          }}
-        ></Card>
+        <FlatList
+          horizontal={true}
+          pagingEnabled={true}
+          data={deck.cards}
+          keyExtractor={(card, index) => index}
+          renderItem={(card) => (
+            <Card
+              deck={deck}
+              card={card}
+              style={{
+                backgroundColor: colors[deck.color].medium,
+                width: width-32
+              }}
+            ></Card>
+          )}
+        />
       </View>
     )
   }
