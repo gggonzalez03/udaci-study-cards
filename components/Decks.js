@@ -73,6 +73,7 @@ class Decks extends Component {
                 fontSize: 48,
                 color: colors["BlueGrey"].extraLight,
                 margin: 4,
+                textAlign: 'center',
               }}>New Deck Title
                 </Text>
               <TextInput
