@@ -67,6 +67,7 @@ class Deck extends Component {
           ref={(ref) => { this.cardList = ref }}
           horizontal={true}
           pagingEnabled={true}
+          scrollEnabled={false}
           data={deck.cards}
           keyExtractor={(card, index) => index}
           renderItem={(card) => (
