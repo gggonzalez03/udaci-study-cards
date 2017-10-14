@@ -6,7 +6,8 @@ import colors from '../helpers/colors'
 
 class Deck extends Component {
   state = {
-    addCardFormVisible: false
+    addCardFormVisible: false,
+    nextFocusIndex: 1,
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -32,6 +33,29 @@ class Deck extends Component {
       addCardFormVisible: visible
     })
   }
+  scrollToIndex = (index) => {
+    this.cardList.scrollToIndex({ animated: true, index: "" + index });
+  }
+  correctPressed = () => {
+    // Only move to the next card if there is a next card
+    // This will prevent out of bounds error or exception
+    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+      this.scrollToIndex(this.state.nextFocusIndex)
+      this.setState(state => ({
+        nextFocusIndex: state.nextFocusIndex + 1
+      }))
+    }
+  }
+  incorrectPressed = () => {
+    // Only move to the next card if there is a next card
+    // This will prevent out of bounds error or exception
+    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+      this.scrollToIndex(this.state.nextFocusIndex)
+      this.setState(state => ({
+        nextFocusIndex: state.nextFocusIndex + 1
+      }))
+    }
+  }
   render() {
     const deck = this.props.navigation.state.params.deck
     const { height, width } = Dimensions.get('window')
@@ -40,12 +64,15 @@ class Deck extends Component {
         style={{ flex: 1 }}
       >
         <FlatList
+          ref={(ref) => { this.cardList = ref }}
           horizontal={true}
           pagingEnabled={true}
           data={deck.cards}
           keyExtractor={(card, index) => index}
           renderItem={(card) => (
             <Card
+              correctPressed={() => this.correctPressed()}
+              incorrectPressed={() => this.incorrectPressed()}
               deck={deck}
               card={card}
               style={{

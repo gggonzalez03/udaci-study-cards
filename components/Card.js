@@ -41,6 +41,12 @@ class Card extends Component {
       front: !this.state.front
     }))
   }
+  correctPressed = () => {
+    this.props.correctPressed()
+  }
+  incorrectPressed = () => {
+    this.props.incorrectPressed()
+  }
   render() {
     const { style, deck, card } = this.props
     return (
@@ -81,6 +87,7 @@ class Card extends Component {
               style={styles.buttonContainer}
             >
               <TouchableOpacity
+                onPress={() => this.incorrectPressed()}
                 style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
               >
                 <Text
@@ -88,6 +95,7 @@ class Card extends Component {
                 >Incorrect</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => this.correctPressed()}
                 style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
               >
                 <Text
@@ -127,6 +135,7 @@ class Card extends Component {
               style={styles.buttonContainer}
             >
               <TouchableOpacity
+                onPress={() => this.incorrectPressed()}
                 style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
               >
                 <Text
@@ -134,6 +143,7 @@ class Card extends Component {
                 >Incorrect</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => this.correctPressed()}
                 style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
               >
                 <Text
