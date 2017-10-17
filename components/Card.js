@@ -49,6 +49,50 @@ class Card extends Component {
   }
   render() {
     const { style, deck, card } = this.props
+    if (card.item.cardCover)
+      return (
+        <Animated.View
+          style={[style, styles.container, { padding: this.state.padding }]}
+        >
+          <View
+            style={{ flex: 1 }}
+          >
+            <Animated.View
+              style={[styles.card, {
+                backfaceVisibility: 'hidden',
+                backgroundColor: colors[deck.color].medium,
+                transform: [
+                  { rotateY: this.state.frontFaceFlip.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }
+                ],
+              }]}
+            >
+              <View
+                style={{ flex: 1, justifyContent: 'center' }}
+              >
+                <Text
+                  style={styles.question}
+                >{deck.name}</Text>
+                  <Text
+                    style={[styles.flipButtonLabel, { color: colors[deck.color].dark }]}
+                  >{deck.cards.length-1} card/s</Text>
+              </View>
+              <View
+                style={styles.buttonContainer}
+              >
+                <TouchableOpacity
+                  onPress={() => this.incorrectPressed()}
+                  style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
+                >
+                  <Text
+                    style={styles.buttonLabel}
+                  >Start Quiz</Text>
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
+          </View>
+        </Animated.View>
+      )
+
     return (
       <Animated.View
         style={[style, styles.container, { padding: this.state.padding }]}
@@ -67,7 +111,7 @@ class Card extends Component {
           >
             <Text
               style={styles.cardCount}
-            >{card.index}/{deck.cards.length}</Text>
+            >{card.index}/{deck.cards.length-1}</Text>
             <View
               style={{ flex: 1, justifyContent: 'center' }}
             >
@@ -115,7 +159,7 @@ class Card extends Component {
           >
             <Text
               style={styles.cardCount}
-            >{card.index}/{deck.cards.length}</Text>
+            >{card.index}/{deck.cards.length-1}</Text>
             <View
               style={{ flex: 1, justifyContent: 'center' }}
             >

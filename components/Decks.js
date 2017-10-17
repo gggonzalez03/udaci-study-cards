@@ -30,6 +30,8 @@ class Decks extends Component {
     })
   }
   goToDeckView = (deck) => {
+    // Add a cover card for the deck
+    deck = {...deck, cards: [{ cardCover: true }].concat(deck.cards)}
     this.props.navigation.navigate('Deck', { deck: deck })
   }
   setAddDeckFormVisible = (visible) => {
