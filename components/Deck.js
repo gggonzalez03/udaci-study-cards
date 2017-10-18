@@ -81,7 +81,7 @@ class Deck extends Component {
     }
   }
   endQuiz = () => {
-    this.props.navigation.navigate('Main')
+    this.props.navigation.goBack(null)
   }
   render() {
     const deck = this.props.navigation.state.params.deck
