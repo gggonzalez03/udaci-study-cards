@@ -47,6 +47,9 @@ class Card extends Component {
   incorrectPressed = () => {
     this.props.incorrectPressed()
   }
+  startQuiz = () => {
+    this.props.startQuiz()
+  }
   render() {
     const { style, deck, card } = this.props
     if (card.item.cardCover)
@@ -80,7 +83,7 @@ class Card extends Component {
                 style={styles.buttonContainer}
               >
                 <TouchableOpacity
-                  onPress={() => this.incorrectPressed()}
+                  onPress={() => this.startQuiz()}
                   style={[styles.button, { backgroundColor: colors[deck.color].dark }]}
                 >
                   <Text

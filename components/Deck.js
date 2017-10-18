@@ -45,6 +45,13 @@ class Deck extends Component {
         nextFocusIndex: state.nextFocusIndex + 1
       }))
     }
+    else {
+      /**
+       * TODO:
+       * Pop up a modal saying the quiz as ended
+       */
+      this.endQuiz()
+    }
   }
   incorrectPressed = () => {
     // Only move to the next card if there is a next card
@@ -55,6 +62,26 @@ class Deck extends Component {
         nextFocusIndex: state.nextFocusIndex + 1
       }))
     }
+    else {
+      /**
+       * TODO:
+       * Pop up a modal saying the quiz as ended
+       */
+      this.endQuiz()
+    }
+  }
+  startQuiz = () => {
+    // Only move to the next card if there is a next card
+    // This will prevent out of bounds error or exception
+    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+      this.scrollToIndex(this.state.nextFocusIndex)
+      this.setState(state => ({
+        nextFocusIndex: state.nextFocusIndex + 1
+      }))
+    }
+  }
+  endQuiz = () => {
+    this.props.navigation.navigate('Main')
   }
   render() {
     const deck = this.props.navigation.state.params.deck
@@ -74,6 +101,7 @@ class Deck extends Component {
             <Card
               correctPressed={() => this.correctPressed()}
               incorrectPressed={() => this.incorrectPressed()}
+              startQuiz={() => this.startQuiz()}
               deck={deck}
               card={card}
               style={{
