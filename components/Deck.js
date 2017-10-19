@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, Dimensions, TouchableWithoutFeedback, TouchableOpacity, Modal, TextInput } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
+import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import colors from '../helpers/colors'
 
 class Deck extends Component {
   state = {
     addCardFormVisible: false,
+    endQuizMessageVisible: false,
     nextFocusIndex: 1,
   }
   static navigationOptions = ({ navigation }) => {
@@ -33,6 +34,11 @@ class Deck extends Component {
       addCardFormVisible: visible
     })
   }
+  setEndQuizMessageVisible = (visible) => {
+    this.setState({
+      endQuizMessageVisible: visible
+    })
+  }
   scrollToIndex = (index) => {
     this.cardList.scrollToIndex({ animated: true, index: "" + index });
   }
@@ -50,7 +56,7 @@ class Deck extends Component {
        * TODO:
        * Pop up a modal saying the quiz as ended
        */
-      this.endQuiz()
+      this.setEndQuizMessageVisible(true)
     }
   }
   incorrectPressed = () => {
@@ -63,11 +69,7 @@ class Deck extends Component {
       }))
     }
     else {
-      /**
-       * TODO:
-       * Pop up a modal saying the quiz as ended
-       */
-      this.endQuiz()
+      this.setEndQuizMessageVisible(true)
     }
   }
   startQuiz = () => {
@@ -82,6 +84,10 @@ class Deck extends Component {
   }
   endQuiz = () => {
     this.props.navigation.goBack(null)
+  }
+  confirmEndQuiz = () => {
+    this.setEndQuizMessageVisible(false)
+    this.endQuiz()
   }
   render() {
     const deck = this.props.navigation.state.params.deck
@@ -192,6 +198,61 @@ class Deck extends Component {
                 }}
               >
                 <Text style={{ fontSize: 24, color: colors[deck.color].extraLight }}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* End Quiz Message */}
+        <Modal
+          visible={this.state.endQuizMessageVisible}
+          animationType={"slide"}
+          transparent={true}
+        >
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors[deck.color].dark }}
+          >
+            <View
+              style={{
+                position: 'absolute',
+                top: 22,
+                right: 8,
+              }}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.confirmEndQuiz()
+                }}
+              >
+                <Entypo name='circle-with-cross' size={28} style={{
+                  color: 'white',
+                  backgroundColor: 'transparent',
+                  margin: 8
+                }} />
+              </TouchableWithoutFeedback>
+            </View>
+            <View
+              style={{ alignItems: 'center' }}
+            >
+              <Ionicons name='md-checkmark-circle-outline' size={180} style={{
+                color: 'white',
+                backgroundColor: 'transparent',
+                margin: 8
+              }} />
+              <Text style={{color: 'white', fontSize: 28, marginBottom: 8}}>You scored 2/12</Text>
+              <TouchableOpacity
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  borderColor: colors[deck.color].extraLight,
+                  margin: 4,
+                  padding: 4,
+                  alignItems: 'center'
+                }}
+                onPress={() => {
+                  this.confirmEndQuiz()
+                }}
+              >
+                <Text style={{ fontSize: 24, color: colors[deck.color].extraLight }}>Dismiss</Text>
               </TouchableOpacity>
             </View>
           </View>
