@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, TextInput } from 'react-native'
 import { MaterialCommunityIcons, Ionicons, Octicons, Entypo } from '@expo/vector-icons'
 import Tile from './Tile'
-import { userDecks } from '../helpers/DummyData'
+import AddCardForm from './AddCardForm'
 import colors from '../helpers/colors'
+import { getDecks } from '../helpers/AsyncStorageFuncs'
 
 class Decks extends Component {
   state = {
@@ -28,10 +29,14 @@ class Decks extends Component {
     this.props.navigation.setParams({
       setAddDeckFormVisible: (visible) => this.setAddDeckFormVisible(visible),
     })
+
+    getDecks((stores) => {
+      this.setState({ decks: stores })
+    })
   }
   goToDeckView = (deck) => {
     // Add a cover card for the deck
-    deck = {...deck, cards: [{ cardCover: true }].concat(deck.cards)}
+    deck = { ...deck, cards: [{ cardCover: true }].concat(deck.cards) }
     this.props.navigation.navigate('Deck', { deck: deck })
   }
   setAddDeckFormVisible = (visible) => {
@@ -40,6 +45,7 @@ class Decks extends Component {
     })
   }
   render() {
+    const { decks } = this.state
     return (
       <View style={styles.container}>
         <Modal
@@ -47,76 +53,23 @@ class Decks extends Component {
           animationType={"slide"}
           transparent={true}
         >
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors["BlueGrey"].dark }}
-          >
-            <View
-              style={{
-                position: 'absolute',
-                top: 22,
-                right: 8,
-              }}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  this.setAddDeckFormVisible(false)
-                }}
-              >
-                <Entypo name='circle-with-cross' size={28} style={{
-                  color: 'white',
-                  backgroundColor: 'transparent',
-                  margin: 8
-                }} />
-              </TouchableWithoutFeedback>
-            </View>
-            <View
-              style={{}}
-            >
-              <Text style={{
-                fontSize: 48,
-                color: colors["BlueGrey"].extraLight,
-                margin: 4,
-                textAlign: 'center',
-              }}>New Deck Title
-                </Text>
-              <TextInput
-                style={{
-                  fontSize: 24,
-                  color: colors["BlueGrey"].extraLight,
-                  borderWidth: 1, borderRadius: 5,
-                  borderColor: colors["BlueGrey"].extraLight,
-                  margin: 4,
-                  padding: 4,
-                }}
-                autoFocus={true}
-              ></TextInput>
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  borderColor: colors["BlueGrey"].extraLight,
-                  margin: 4,
-                  padding: 4,
-                  alignItems: 'center'
-                }}
-                onPress={() => {
-                  /**TODO:
-                   * Create deck (add to local storage)
-                   */
-                  this.setAddDeckFormVisible(false)
-                }}
-              >
-                <Text style={{ fontSize: 24, color: colors["BlueGrey"].extraLight }}>Create</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <AddCardForm
+            afterSubmit={() => {
+              this.setAddDeckFormVisible(false)
+              getDecks((stores) => {
+                this.setState({ decks: stores })
+              })
+            }}
+            afterCancel={() => this.setAddDeckFormVisible(false)}
+          />
         </Modal>
         <ScrollView
           contentContainerStyle={styles.deckScrollView}
         >
           {
-            userDecks && Object.values(userDecks).map(deck => (
+            decks && Object.values(decks).map(deck => (
               <View
-                key={deck.name}
+                key={deck.id}
                 style={{ flexDirection: 'row' }}
               >
                 <Tile
