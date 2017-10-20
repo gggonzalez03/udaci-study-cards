@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, TextInput } from 'react-native'
 import { MaterialCommunityIcons, Ionicons, Octicons, Entypo } from '@expo/vector-icons'
 import Tile from './Tile'
-import AddCardForm from './AddCardForm'
+import AddDeckForm from './AddDeckForm'
 import colors from '../helpers/colors'
 import { getDecks } from '../helpers/AsyncStorageFuncs'
 
@@ -53,7 +53,7 @@ class Decks extends Component {
           animationType={"slide"}
           transparent={true}
         >
-          <AddCardForm
+          <AddDeckForm
             afterSubmit={() => {
               this.setAddDeckFormVisible(false)
               getDecks((stores) => {

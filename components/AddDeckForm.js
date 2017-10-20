@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons'
 import { addDeck } from '../helpers/AsyncStorageFuncs'
 import colors from '../helpers/colors'
 
-class AddCardForm extends Component {
+class AddDeckForm extends Component {
   state = {
     deckNameField: ''
   }
@@ -104,4 +104,4 @@ class AddCardForm extends Component {
   }
 }
 
-export default AddCardForm
+export default AddDeckForm
