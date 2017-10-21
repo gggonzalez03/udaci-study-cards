@@ -9,13 +9,14 @@ function generateID() {
 
 export function addDeck(deckName) {
   // Supply additional data to the new deck
+  const key = `${STORE}:${generateID()}`
   const deck = {
-    id: generateID(),
+    id: key,
     name: deckName,
     cards: [],
     color: Object.entries(colors)[Math.floor(Math.random() * (Object.values(colors).length - 1))][0] // Get a random color from colors
   }
-  AsyncStorage.setItem(JSON.stringify(`${STORE}:${generateID()}`), JSON.stringify(deck))
+  AsyncStorage.setItem(key, JSON.stringify(deck))
 }
 
 export function getDecks(callback) {
@@ -36,10 +37,22 @@ export function getDecks(callback) {
   })
 }
 
-export function getDeck(key) {
-
+export function getDeckCards(key, callback) {
+  AsyncStorage.getItem(key, (err, deck) => {
+    let cards = JSON.parse(deck).cards
+    callback(cards)
+  })
 }
 
-export function addCardToDeck(deck, { question, answer }) {
-
+export function addCardToDeck(key, card) {
+  AsyncStorage.getItem(key, (err, deck) => {
+    /**
+     * Get deck cards
+     * Combine deck cards with the new card
+     * Merge cards in the deck
+     */
+    let cards = JSON.parse(deck).cards
+    cards = [...cards, card]
+    AsyncStorage.mergeItem(key, JSON.stringify({ cards: cards }))
+  })
 }

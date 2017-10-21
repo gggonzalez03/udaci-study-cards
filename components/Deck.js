@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, Dimensions, TouchableWithoutFeedback, TouchableOpacity, Modal, TextInput } from 'react-native'
 import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
+import AddCardForm from './AddCardForm'
 import colors from '../helpers/colors'
+import { getDeckCards } from '../helpers/AsyncStorageFuncs'
 
 class Deck extends Component {
   state = {
     addCardFormVisible: false,
     endQuizMessageVisible: false,
     nextFocusIndex: 1,
+    deck: {}
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -28,6 +31,7 @@ class Deck extends Component {
       headerTitle: this.props.navigation.state.params.deck.name,
       setAddCardFormVisible: (visible) => this.setAddCardFormVisible(visible),
     })
+    this.setState({ deck: this.props.navigation.state.params.deck })
   }
   setAddCardFormVisible = (visible) => {
     this.setState({
@@ -90,7 +94,7 @@ class Deck extends Component {
     this.endQuiz()
   }
   render() {
-    const deck = this.props.navigation.state.params.deck
+    const deck = this.state.deck
     const { height, width } = Dimensions.get('window')
     return (
       <View
@@ -121,86 +125,22 @@ class Deck extends Component {
           animationType={"slide"}
           transparent={true}
         >
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors[deck.color].dark }}
-          >
-            <View
-              style={{
-                position: 'absolute',
-                top: 22,
-                right: 8,
-              }}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  this.setAddCardFormVisible(false)
-                }}
-              >
-                <Entypo name='circle-with-cross' size={28} style={{
-                  color: 'white',
-                  backgroundColor: 'transparent',
-                  margin: 8
-                }} />
-              </TouchableWithoutFeedback>
-            </View>
-            <View
-              style={{}}
-            >
-              <Text style={{
-                fontSize: 48,
-                color: colors[deck.color].extraLight,
-                margin: 4,
-                textAlign: 'center',
-              }}>New Card Question
-              </Text>
-              <TextInput
-                style={{
-                  fontSize: 24,
-                  color: colors[deck.color].extraLight,
-                  borderWidth: 1, borderRadius: 5,
-                  borderColor: colors[deck.color].extraLight,
-                  margin: 4,
-                  padding: 4,
-                }}
-                autoFocus={false}
-              ></TextInput>
-              <Text style={{
-                fontSize: 48,
-                color: colors[deck.color].extraLight,
-                margin: 4,
-                textAlign: 'center',
-              }}>New Card Answer
-              </Text>
-              <TextInput
-                style={{
-                  fontSize: 24,
-                  color: colors[deck.color].extraLight,
-                  borderWidth: 1, borderRadius: 5,
-                  borderColor: colors[deck.color].extraLight,
-                  margin: 4,
-                  padding: 4,
-                }}
-                autoFocus={false}
-              ></TextInput>
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  borderColor: colors[deck.color].extraLight,
-                  margin: 4,
-                  padding: 4,
-                  alignItems: 'center'
-                }}
-                onPress={() => {
-                  /**TODO:
-                   * Add deck card (add to local storage)
-                   */
-                  this.setAddCardFormVisible(false)
-                }}
-              >
-                <Text style={{ fontSize: 24, color: colors[deck.color].extraLight }}>Add</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <AddCardForm
+            deck={deck}
+            afterSubmit={() => {
+              this.setAddCardFormVisible(false)
+              getDeckCards(deck.id, (cards) => {
+                this.setState(state => {
+                  let deck = state.deck
+                  deck.cards = [deck.cards[0], ...cards]
+                  return {
+                    deck: deck,
+                  }
+                })
+              })
+            }}
+            afterCancel={() => this.setAddCardFormVisible(false)}
+          />
         </Modal>
 
         {/* End Quiz Message */}
@@ -238,7 +178,7 @@ class Deck extends Component {
                 backgroundColor: 'transparent',
                 margin: 8
               }} />
-              <Text style={{color: 'white', fontSize: 28, marginBottom: 8}}>You scored 2/12</Text>
+              <Text style={{ color: 'white', fontSize: 28, marginBottom: 8 }}>You scored 2/12</Text>
               <TouchableOpacity
                 style={{
                   borderWidth: 1,
