@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
-import { addDeck } from '../helpers/AsyncStorageFuncs'
+import { addDeck } from '../helpers/api'
 import colors from '../helpers/colors'
 
 class AddDeckForm extends Component {

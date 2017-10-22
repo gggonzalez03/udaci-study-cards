@@ -6,6 +6,10 @@ import {
 
 import Decks from './components/Decks'
 import Deck from './components/Deck'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider, connect } from 'react-redux'
+import thunk from 'redux-thunk'
+import reducer from './reducers/index'
 
 const MainNavigator = StackNavigator({
   Main: { screen: Decks },
@@ -17,10 +21,17 @@ const MainNavigator = StackNavigator({
   }
 });
 
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk)
+)
+
 export default class App extends React.Component {
   render() {
     return (
-      <MainNavigator />
+      <Provider store={store}>
+        <MainNavigator />
+      </Provider>
     )
   }
 }

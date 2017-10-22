@@ -4,7 +4,8 @@ import { MaterialCommunityIcons, Ionicons, Octicons, Entypo } from '@expo/vector
 import Tile from './Tile'
 import AddDeckForm from './AddDeckForm'
 import colors from '../helpers/colors'
-import { getDecks } from '../helpers/AsyncStorageFuncs'
+import { getDecks } from '../actions'
+import { connect } from 'react-redux'
 
 class Decks extends Component {
   state = {
@@ -30,9 +31,7 @@ class Decks extends Component {
       setAddDeckFormVisible: (visible) => this.setAddDeckFormVisible(visible),
     })
 
-    getDecks((stores) => {
-      this.setState({ decks: stores })
-    })
+    this.props.getDecks()
   }
   goToDeckView = (deck) => {
     // Add a cover card for the deck
@@ -45,7 +44,7 @@ class Decks extends Component {
     })
   }
   render() {
-    const { decks } = this.state
+    const { decks } = this.props
     return (
       <View style={styles.container}>
         <Modal
@@ -56,9 +55,7 @@ class Decks extends Component {
           <AddDeckForm
             afterSubmit={() => {
               this.setAddDeckFormVisible(false)
-              getDecks((stores) => {
-                this.setState({ decks: stores })
-              })
+              this.props.getDecks()
             }}
             afterCancel={() => this.setAddDeckFormVisible(false)}
           />
@@ -107,4 +104,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Decks
+const mapStateToProps = (deck) => {
+  return {
+    decks: deck.decks,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getDecks: () => dispatch(getDecks()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Decks)

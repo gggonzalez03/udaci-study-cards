@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import colors from '../helpers/colors'
-import { addCardToDeck } from '../helpers/AsyncStorageFuncs'
+import { addCardToDeck } from '../helpers/api'
 
 class AddCardForm extends Component {
   state = {

@@ -4,7 +4,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
 import colors from '../helpers/colors'
-import { getDeckCards } from '../helpers/AsyncStorageFuncs'
+import { getDeckCards } from '../helpers/api'
 
 class Deck extends Component {
   state = {
