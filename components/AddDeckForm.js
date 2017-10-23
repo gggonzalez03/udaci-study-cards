@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
-import { addDeck } from '../helpers/api'
+import { addDeck } from '../actions'
 import colors from '../helpers/colors'
+import { connect } from 'react-redux'
 
 class AddDeckForm extends Component {
   state = {
@@ -15,7 +16,7 @@ class AddDeckForm extends Component {
     // Save the deck in local storage only if the field is filled
     // with a valid deck name
     if (this.state.deckNameField) {
-      addDeck(this.state.deckNameField)
+      this.props.addDeck(this.state.deckNameField)
       this.props.afterSubmit()
     }
 
@@ -104,4 +105,15 @@ class AddDeckForm extends Component {
   }
 }
 
-export default AddDeckForm
+const mapStateToProps = (deck) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addDeck: (deckName) => dispatch(addDeck(deckName)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDeckForm)

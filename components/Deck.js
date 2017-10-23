@@ -4,14 +4,13 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
 import colors from '../helpers/colors'
-import { getDeckCards } from '../helpers/api'
+import { connect } from 'react-redux'
 
 class Deck extends Component {
   state = {
     addCardFormVisible: false,
     endQuizMessageVisible: false,
     nextFocusIndex: 1,
-    deck: {}
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -31,7 +30,6 @@ class Deck extends Component {
       headerTitle: this.props.navigation.state.params.deck.name,
       setAddCardFormVisible: (visible) => this.setAddCardFormVisible(visible),
     })
-    this.setState({ deck: this.props.navigation.state.params.deck })
   }
   setAddCardFormVisible = (visible) => {
     this.setState({
@@ -49,7 +47,7 @@ class Deck extends Component {
   correctPressed = () => {
     // Only move to the next card if there is a next card
     // This will prevent out of bounds error or exception
-    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+    if (this.state.nextFocusIndex < this.props.decks[this.props.navigation.state.params.deck.id].cards.length) {
       this.scrollToIndex(this.state.nextFocusIndex)
       this.setState(state => ({
         nextFocusIndex: state.nextFocusIndex + 1
@@ -66,7 +64,7 @@ class Deck extends Component {
   incorrectPressed = () => {
     // Only move to the next card if there is a next card
     // This will prevent out of bounds error or exception
-    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+    if (this.state.nextFocusIndex < this.props.decks[this.props.navigation.state.params.deck.id].cards.length) {
       this.scrollToIndex(this.state.nextFocusIndex)
       this.setState(state => ({
         nextFocusIndex: state.nextFocusIndex + 1
@@ -79,7 +77,7 @@ class Deck extends Component {
   startQuiz = () => {
     // Only move to the next card if there is a next card
     // This will prevent out of bounds error or exception
-    if (this.state.nextFocusIndex < this.props.navigation.state.params.deck.cards.length) {
+    if (this.state.nextFocusIndex < this.props.decks[this.props.navigation.state.params.deck.id].cards.length) {
       this.scrollToIndex(this.state.nextFocusIndex)
       this.setState(state => ({
         nextFocusIndex: state.nextFocusIndex + 1
@@ -94,7 +92,7 @@ class Deck extends Component {
     this.endQuiz()
   }
   render() {
-    const deck = this.state.deck
+    let deck = this.props.decks[this.props.navigation.state.params.deck.id]
     const { height, width } = Dimensions.get('window')
     return (
       <View
@@ -129,15 +127,6 @@ class Deck extends Component {
             deck={deck}
             afterSubmit={() => {
               this.setAddCardFormVisible(false)
-              getDeckCards(deck.id, (cards) => {
-                this.setState(state => {
-                  let deck = state.deck
-                  deck.cards = [deck.cards[0], ...cards]
-                  return {
-                    deck: deck,
-                  }
-                })
-              })
             }}
             afterCancel={() => this.setAddCardFormVisible(false)}
           />
@@ -202,4 +191,15 @@ class Deck extends Component {
   }
 }
 
-export default Deck
+const mapStateToProps = (deck) => {
+  return {
+    decks: deck.decks,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Deck)

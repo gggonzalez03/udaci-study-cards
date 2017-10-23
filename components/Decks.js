@@ -64,14 +64,14 @@ class Decks extends Component {
           contentContainerStyle={styles.deckScrollView}
         >
           {
-            decks && Object.values(decks).map(deck => (
+            decks && decks.map(deck => (
               <View
                 key={deck.id}
                 style={{ flexDirection: 'row' }}
               >
                 <Tile
                   title={deck.name}
-                  subtitle={deck.cards.length}
+                  subtitle={deck.cards.length-1}
                   onPress={() => this.goToDeckView(deck)}
                   style={[styles.deck, { backgroundColor: colors[deck.color].medium }]}
                 >
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (deck) => {
   return {
-    decks: deck.decks,
+    decks: Object.values(deck.decks?deck.decks:[]),
   }
 }
 

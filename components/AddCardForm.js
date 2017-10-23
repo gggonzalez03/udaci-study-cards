@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } fro
 import { Entypo } from '@expo/vector-icons'
 import colors from '../helpers/colors'
 import { addCardToDeck } from '../helpers/api'
+import { addDeckCard } from '../actions'
+import { connect } from 'react-redux'
 
 class AddCardForm extends Component {
   state = {
@@ -23,7 +25,7 @@ class AddCardForm extends Component {
   }
 
   submit = () => {
-    addCardToDeck(this.props.deck.id, {
+    this.props.addDeckCard(this.props.deck.id, {
       question: this.state.question,
       answer: this.state.answer,
     })
@@ -121,4 +123,15 @@ class AddCardForm extends Component {
   }
 }
 
-export default AddCardForm
+const mapStateToProps = (deck) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addDeckCard: (key, card) => dispatch(addDeckCard(key, card))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCardForm)
