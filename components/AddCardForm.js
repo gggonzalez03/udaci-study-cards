@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import colors from '../helpers/colors'
-import { addCardToDeck } from '../helpers/api'
 import { addDeckCard } from '../actions'
 import { connect } from 'react-redux'
 

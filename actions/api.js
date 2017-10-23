@@ -48,13 +48,6 @@ export function getDecks() {
     })
 }
 
-export function getDeckCards(key, callback) {
-  AsyncStorage.getItem(key, (err, deck) => {
-    let cards = JSON.parse(deck).cards
-    callback(cards)
-  })
-}
-
 export function addDeckCard(key, card) {
   return AsyncStorage.getItem(key, (err, deck) => deck)
     .then(deck => {
