@@ -3,6 +3,7 @@ import { View, Text, FlatList, Dimensions, TouchableWithoutFeedback, TouchableOp
 import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
+import EndQuizMessage from './EndQuizMessage'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
 
@@ -85,11 +86,19 @@ class Deck extends Component {
     }
   }
   endQuiz = () => {
+    this.setEndQuizMessageVisible(false)
     this.props.navigation.goBack(null)
   }
-  confirmEndQuiz = () => {
+
+  startOver = () => {
+    // Start with the first card already opened
+    // 1 is the index of the first card and 2 is the index of the
+    // next card over.
+    this.scrollToIndex(1)
+    this.setState(state => ({
+      nextFocusIndex: 2
+    }))
     this.setEndQuizMessageVisible(false)
-    this.endQuiz()
   }
   render() {
     let deck = this.props.decks[this.props.navigation.state.params.deck.id]
@@ -138,53 +147,11 @@ class Deck extends Component {
           animationType={"slide"}
           transparent={true}
         >
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors[deck.color].dark }}
-          >
-            <View
-              style={{
-                position: 'absolute',
-                top: 22,
-                right: 8,
-              }}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  this.confirmEndQuiz()
-                }}
-              >
-                <Entypo name='circle-with-cross' size={28} style={{
-                  color: 'white',
-                  backgroundColor: 'transparent',
-                  margin: 8
-                }} />
-              </TouchableWithoutFeedback>
-            </View>
-            <View
-              style={{ alignItems: 'center' }}
-            >
-              <Ionicons name='md-checkmark-circle-outline' size={180} style={{
-                color: 'white',
-                backgroundColor: 'transparent',
-                margin: 8
-              }} />
-              <Text style={{ color: 'white', fontSize: 28, marginBottom: 8 }}>You scored 2/12</Text>
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  borderColor: colors[deck.color].extraLight,
-                  margin: 4,
-                  padding: 4,
-                  alignItems: 'center'
-                }}
-                onPress={() => {
-                  this.confirmEndQuiz()
-                }}
-              >
-                <Text style={{ fontSize: 24, color: colors[deck.color].extraLight }}>Dismiss</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <EndQuizMessage
+            deck={deck}
+            onExit={() => this.endQuiz()}
+            onStartOver={() => this.startOver()}
+          />
         </Modal>
       </View>
     )
