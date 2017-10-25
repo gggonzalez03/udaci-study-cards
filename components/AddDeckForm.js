@@ -105,7 +105,7 @@ class AddDeckForm extends Component {
   }
 }
 
-const mapStateToProps = (deck) => {
+const mapStateToProps = ({ deck }) => {
   return {
   }
 }

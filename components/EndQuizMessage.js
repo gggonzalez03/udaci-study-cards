@@ -2,19 +2,27 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import colors from '../helpers/colors'
 import { Entypo, Ionicons } from '@expo/vector-icons'
+import { updateMaxScore, updateScore } from '../actions'
+import { connect } from 'react-redux'
 
 class EndQuizMessage extends Component {
 
+  componentWillMount = () => {
+    this.props.updateMaxScore(this.props.deck.cards.length - 1)
+  }
+
   endQuiz = () => {
     this.props.onExit()
+    this.props.updateScore(0)
   }
 
   startOver = () => {
     this.props.onStartOver()
+    this.props.updateScore(0)
   }
 
   render() {
-    const { deck } = this.props
+    const { deck, quiz } = this.props
     return (
       <View
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors[deck.color].dark }}
@@ -45,13 +53,13 @@ class EndQuizMessage extends Component {
             backgroundColor: 'transparent',
             margin: 8
           }} />
-          <Text style={{ color: 'white', fontSize: 28, marginBottom: 8 }}>You scored 2/{deck.cards.length-1}</Text>
+          <Text style={{ color: 'white', fontSize: 28, marginBottom: 8 }}>{quiz.score}/{quiz.maxScore}</Text>
           <View style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
             paddingLeft: 32,
             paddingRight: 32,
-            }}>
+          }}>
             <TouchableOpacity
               style={{
                 flex: 1,
@@ -91,4 +99,22 @@ class EndQuizMessage extends Component {
   }
 }
 
-export default EndQuizMessage
+const mapStateToProps = ({ deck, quiz }) => {
+  return {
+    decks: deck.decks,
+    quiz: {
+      ...quiz,
+      score: quiz.score,
+      maxScore: quiz.maxScore,
+    }
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateMaxScore: (score) => dispatch(updateMaxScore(score)),
+    updateScore: (score) => dispatch(updateScore(score))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EndQuizMessage)

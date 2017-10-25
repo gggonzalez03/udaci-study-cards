@@ -122,7 +122,7 @@ class AddCardForm extends Component {
   }
 }
 
-const mapStateToProps = (deck) => {
+const mapStateToProps = ({ deck }) => {
   return {
   }
 }

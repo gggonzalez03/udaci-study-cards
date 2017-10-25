@@ -4,6 +4,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
 import EndQuizMessage from './EndQuizMessage'
+import { updateScore } from '../actions'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
 
@@ -55,12 +56,10 @@ class Deck extends Component {
       }))
     }
     else {
-      /**
-       * TODO:
-       * Pop up a modal saying the quiz as ended
-       */
       this.setEndQuizMessageVisible(true)
     }
+
+    this.props.updateScore(this.props.quiz.score + 1)
   }
   incorrectPressed = () => {
     // Only move to the next card if there is a next card
@@ -158,14 +157,19 @@ class Deck extends Component {
   }
 }
 
-const mapStateToProps = (deck) => {
+const mapStateToProps = ({ deck, quiz }) => {
   return {
     decks: deck.decks,
+    quiz: {
+      ...quiz,
+      score: quiz.score,
+    }
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateScore: (score) => dispatch(updateScore(score)),
   }
 }
 

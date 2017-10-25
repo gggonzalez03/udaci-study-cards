@@ -71,7 +71,7 @@ class Decks extends Component {
               >
                 <Tile
                   title={deck.name}
-                  subtitle={deck.cards.length-1}
+                  subtitle={deck.cards.length - 1}
                   onPress={() => this.goToDeckView(deck)}
                   style={[styles.deck, { backgroundColor: colors[deck.color].medium }]}
                 >
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (deck) => {
+const mapStateToProps = ({ deck }) => {
   return {
-    decks: Object.values(deck.decks?deck.decks:[]),
+    decks: Object.values(deck.decks ? deck.decks : []),
   }
 }
 
