@@ -9,6 +9,7 @@ class AddCardForm extends Component {
   state = {
     question: '',
     answer: '',
+    invalidInput: false,
   }
 
   changeQuestion = (question) => {
@@ -34,16 +35,16 @@ class AddCardForm extends Component {
       })
       this.props.afterSubmit()
     }
-
-    /**
-     * Give warning to the user saying the that the fields must be filled
-     */
+    else
+      this.setState({
+        invalidInput: true
+      })
   }
 
   render() {
 
     const { deck } = this.props
-    const { question, answer } = this.state
+    const { question, answer, invalidInput } = this.state
 
     return (
       <View
@@ -67,7 +68,7 @@ class AddCardForm extends Component {
           <TextInput
             style={[styles.input, {
               color: colors[deck.color].extraLight,
-              borderColor: colors[deck.color].extraLight,
+              borderColor: colors[invalidInput ? "Red" : deck.color].medium,
             }]}
             autoFocus={false}
             onChangeText={(question) => this.changeQuestion(question)}
@@ -81,7 +82,7 @@ class AddCardForm extends Component {
           <TextInput
             style={[styles.input, {
               color: colors[deck.color].extraLight,
-              borderColor: colors[deck.color].extraLight,
+              borderColor: colors[invalidInput ? "Red" : deck.color].medium,
             }]}
             autoFocus={false}
             onChangeText={(answer) => this.changeAnswer(answer)}
