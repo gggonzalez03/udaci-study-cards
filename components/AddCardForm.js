@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import colors from '../helpers/colors'
 import { addDeckCard } from '../actions'
@@ -38,78 +38,45 @@ class AddCardForm extends Component {
 
     return (
       <View
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors[deck.color].dark }}
+        style={[styles.container, { backgroundColor: colors[deck.color].dark }]}
       >
         <View
-          style={{
-            position: 'absolute',
-            top: 22,
-            right: 8,
-          }}>
+          style={styles.closeBtnContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               this.cancel()
             }}
           >
-            <Entypo name='circle-with-cross' size={28} style={{
-              color: 'white',
-              backgroundColor: 'transparent',
-              margin: 8
-            }} />
+            <Entypo name='circle-with-cross' size={28} style={styles.closeBtn} />
           </TouchableWithoutFeedback>
         </View>
         <View
           style={{}}
         >
-          <Text style={{
-            fontSize: 48,
-            color: colors[deck.color].extraLight,
-            margin: 4,
-            textAlign: 'center',
-          }}>New Card Question
+          <Text style={[styles.inputLabel, { color: colors[deck.color].extraLight }]}>New Card Question
         </Text>
           <TextInput
-            style={{
-              fontSize: 24,
+            style={[styles.input, {
               color: colors[deck.color].extraLight,
-              borderWidth: 1, borderRadius: 5,
               borderColor: colors[deck.color].extraLight,
-              margin: 4,
-              padding: 4,
-            }}
+            }]}
             autoFocus={false}
             onChangeText={(question) => this.changeQuestion(question)}
             value={question}
           ></TextInput>
-          <Text style={{
-            fontSize: 48,
-            color: colors[deck.color].extraLight,
-            margin: 4,
-            textAlign: 'center',
-          }}>New Card Answer
+          <Text style={[styles.inputLabel, { color: colors[deck.color].extraLight }]}>New Card Answer
         </Text>
           <TextInput
-            style={{
-              fontSize: 24,
+            style={[styles.input, {
               color: colors[deck.color].extraLight,
-              borderWidth: 1, borderRadius: 5,
               borderColor: colors[deck.color].extraLight,
-              margin: 4,
-              padding: 4,
-            }}
+            }]}
             autoFocus={false}
             onChangeText={(answer) => this.changeAnswer(answer)}
             value={answer}
           ></TextInput>
           <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              borderRadius: 10,
-              borderColor: colors[deck.color].extraLight,
-              margin: 4,
-              padding: 4,
-              alignItems: 'center'
-            }}
+            style={[styles.submit, { borderColor: colors[deck.color].extraLight }]}
             onPress={() => {
               this.submit()
             }}
@@ -121,6 +88,42 @@ class AddCardForm extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeBtnContainer: {
+    position: 'absolute',
+    top: 22,
+    right: 8,
+  },
+  closeBtn: {
+    color: 'white',
+    backgroundColor: 'transparent',
+    margin: 8
+  },
+  inputLabel: {
+    fontSize: 48,
+    margin: 4,
+    textAlign: 'center',
+  },
+  input: {
+    fontSize: 24,
+    borderWidth: 1, borderRadius: 5,
+    margin: 4,
+    padding: 4,
+  },
+  submit: {
+    borderWidth: 1,
+    borderRadius: 10,
+    margin: 4,
+    padding: 4,
+    alignItems: 'center'
+  }
+})
 
 const mapStateToProps = ({ deck }) => {
   return {

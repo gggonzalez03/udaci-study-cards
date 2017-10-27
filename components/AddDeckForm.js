@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import { addDeck } from '../actions'
 import colors from '../helpers/colors'
@@ -38,58 +38,34 @@ class AddDeckForm extends Component {
     const { deckNameField } = this.state
     return (
       <View
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors["BlueGrey"].dark }}
+        style={[styles.container, { backgroundColor: colors["BlueGrey"].dark }]}
       >
         <View
-          style={{
-            position: 'absolute',
-            top: 22,
-            right: 8,
-          }}>
+          style={styles.closeBtnContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               this.cancel()
             }}
           >
-            <Entypo name='circle-with-cross' size={28} style={{
-              color: 'white',
-              backgroundColor: 'transparent',
-              margin: 8
-            }} />
+            <Entypo name='circle-with-cross' size={28} style={styles.closeBtn} />
           </TouchableWithoutFeedback>
         </View>
         <View
           style={{}}
         >
-          <Text style={{
-            fontSize: 48,
-            color: colors["BlueGrey"].extraLight,
-            margin: 4,
-            textAlign: 'center',
-          }}>New Deck Title
+          <Text style={[styles.inputLabel, { color: colors["BlueGrey"].extraLight }]}>New Deck Title
           </Text>
           <TextInput
-            style={{
-              fontSize: 24,
+            style={[styles.input, {
               color: colors["BlueGrey"].extraLight,
-              borderWidth: 1, borderRadius: 5,
               borderColor: colors["BlueGrey"].extraLight,
-              margin: 4,
-              padding: 4,
-            }}
+            }]}
             autoFocus={true}
             value={deckNameField}
             onChangeText={(deckName) => this.changeDeckNameField(deckName)}
           ></TextInput>
           <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              borderRadius: 10,
-              borderColor: colors["BlueGrey"].extraLight,
-              margin: 4,
-              padding: 4,
-              alignItems: 'center'
-            }}
+            style={[styles.submit, { borderColor: colors["BlueGrey"].extraLight, }]}
             onPress={() => {
               /**TODO:
                * Create deck (add to local storage)
@@ -104,6 +80,42 @@ class AddDeckForm extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeBtnContainer: {
+    position: 'absolute',
+    top: 22,
+    right: 8,
+  },
+  closeBtn: {
+    color: 'white',
+    backgroundColor: 'transparent',
+    margin: 8
+  },
+  inputLabel: {
+    fontSize: 48,
+    margin: 4,
+    textAlign: 'center',
+  },
+  input: {
+    fontSize: 24,
+    borderWidth: 1, borderRadius: 5,
+    margin: 4,
+    padding: 4,
+  },
+  submit: {
+    borderWidth: 1,
+    borderRadius: 10,
+    margin: 4,
+    padding: 4,
+    alignItems: 'center'
+  }
+})
 
 const mapStateToProps = ({ deck }) => {
   return {
