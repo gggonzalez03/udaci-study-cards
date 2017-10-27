@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 
 class AddDeckForm extends Component {
   state = {
-    deckNameField: ''
+    deckNameField: '',
+    invalidInput: false,
   }
   cancel = () => {
     this.props.afterCancel()
@@ -19,11 +20,10 @@ class AddDeckForm extends Component {
       this.props.addDeck(this.state.deckNameField)
       this.props.afterSubmit()
     }
-
-    /**
-     * TODO:
-     * Warn the user that the deck field must be filled
-     */
+    else
+      this.setState({
+        invalidInput: true
+      })
   }
   changeDeckNameField = (deckName) => {
     /**
@@ -35,7 +35,7 @@ class AddDeckForm extends Component {
   }
   render() {
 
-    const { deckNameField } = this.state
+    const { deckNameField, invalidInput } = this.state
     return (
       <View
         style={[styles.container, { backgroundColor: colors["BlueGrey"].dark }]}
@@ -58,7 +58,7 @@ class AddDeckForm extends Component {
           <TextInput
             style={[styles.input, {
               color: colors["BlueGrey"].extraLight,
-              borderColor: colors["BlueGrey"].extraLight,
+              borderColor: colors[invalidInput?"Red":"BlueGrey"].medium,
             }]}
             autoFocus={true}
             value={deckNameField}
