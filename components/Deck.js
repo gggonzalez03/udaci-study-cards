@@ -5,6 +5,7 @@ import Card from './Card'
 import AddCardForm from './AddCardForm'
 import EndQuizMessage from './EndQuizMessage'
 import { updateScore } from '../actions'
+import { clearLocalNotification, setLocalNotification } from '../actions/api'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
 
@@ -56,6 +57,9 @@ class Deck extends Component {
       }))
     }
     else {
+      // Clear notification for today and set up a new one for tomorrow
+      clearLocalNotification()
+      .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
 
@@ -71,6 +75,9 @@ class Deck extends Component {
       }))
     }
     else {
+      // Clear notification for today and set up a new one for tomorrow
+      clearLocalNotification()
+      .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
   }

@@ -10,6 +10,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider, connect } from 'react-redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers/index'
+import { setLocalNotification } from './actions/api'
 
 const MainNavigator = StackNavigator({
   Main: { screen: Decks },
@@ -27,6 +28,9 @@ const store = createStore(
 )
 
 export default class App extends React.Component {
+  componentDidMount = () => {
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={store}>
