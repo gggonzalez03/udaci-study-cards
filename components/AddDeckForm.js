@@ -63,13 +63,13 @@ class AddDeckForm extends Component {
             autoFocus={true}
             value={deckNameField}
             onChangeText={(deckName) => this.changeDeckNameField(deckName)}
+            onSubmitEditing={() => {
+              this.submit()
+            }}
           ></TextInput>
           <TouchableOpacity
             style={[styles.submit, { borderColor: colors["BlueGrey"].extraLight, }]}
             onPress={() => {
-              /**TODO:
-               * Create deck (add to local storage)
-               */
               this.submit()
             }}
           >

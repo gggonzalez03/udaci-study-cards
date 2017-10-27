@@ -24,11 +24,20 @@ class AddCardForm extends Component {
   }
 
   submit = () => {
-    this.props.addDeckCard(this.props.deck.id, {
-      question: this.state.question,
-      answer: this.state.answer,
-    })
-    this.props.afterSubmit()
+
+    // Only continue submit if both question and answer are
+    // not null
+    if (this.state.question && this.state.answer) {
+      this.props.addDeckCard(this.props.deck.id, {
+        question: this.state.question,
+        answer: this.state.answer,
+      })
+      this.props.afterSubmit()
+    }
+
+    /**
+     * Give warning to the user saying the that the fields must be filled
+     */
   }
 
   render() {
@@ -63,6 +72,9 @@ class AddCardForm extends Component {
             autoFocus={false}
             onChangeText={(question) => this.changeQuestion(question)}
             value={question}
+            onSubmitEditing={() => {
+              this.submit()
+            }}
           ></TextInput>
           <Text style={[styles.inputLabel, { color: colors[deck.color].extraLight }]}>New Card Answer
         </Text>
@@ -74,6 +86,9 @@ class AddCardForm extends Component {
             autoFocus={false}
             onChangeText={(answer) => this.changeAnswer(answer)}
             value={answer}
+            onSubmitEditing={() => {
+              this.submit()
+            }}
           ></TextInput>
           <TouchableOpacity
             style={[styles.submit, { borderColor: colors[deck.color].extraLight }]}
