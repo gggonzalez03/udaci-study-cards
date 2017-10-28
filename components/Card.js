@@ -110,6 +110,7 @@ class Card extends Component {
               transform: [
                 { rotateY: this.state.backFaceFlip.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }
               ],
+              zIndex: this.state.front?1:3,
             }]}
           >
             <Text
@@ -158,6 +159,7 @@ class Card extends Component {
               transform: [
                 { rotateY: this.state.frontFaceFlip.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }
               ],
+              zIndex: 2,
             }]}
           >
             <Text
