@@ -7,6 +7,7 @@ import EndQuizMessage from './EndQuizMessage'
 import { clearLocalNotification, setLocalNotification } from '../actions/api'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
+import { updateScore, updateTimesQuizzed } from '../actions/index';
 
 class Deck extends Component {
   state = {
@@ -61,7 +62,7 @@ class Deck extends Component {
       this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
       // Clear notification for today and set up a new one for tomorrow
       clearLocalNotification()
-      .then(setLocalNotification())
+        .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
 
@@ -82,7 +83,7 @@ class Deck extends Component {
       this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
       // Clear notification for today and set up a new one for tomorrow
       clearLocalNotification()
-      .then(setLocalNotification())
+        .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
   }
