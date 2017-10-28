@@ -5,6 +5,7 @@ export const ADD_DECK_CARD = 'ADD_DECK_CARD'
 export const START_QUIZ = 'START_QUIZ'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const UPDATE_MAX_SCORE = 'UPDATE_MAX_SCORE'
+export const UPDATE_TIMES_QUIZZED = 'UPDATE_TIMES_QUIZZED'
 
 
 export function getDecks() {
@@ -56,5 +57,16 @@ export function updateMaxScore(score) {
   return {
     type: UPDATE_MAX_SCORE,
     score: score,
+  }
+}
+
+export function updateTimesQuizzed(key, timesQuizzed) {
+  return function (dispatch) {
+    api.updateTimesQuizzed(key, timesQuizzed)
+    .then(res => dispatch({
+      type: UPDATE_TIMES_QUIZZED,
+      key: res.key,
+      timesQuizzed: res.timesQuizzed,
+    }))
   }
 }

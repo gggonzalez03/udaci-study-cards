@@ -3,6 +3,7 @@ import {
   GET_DECKS,
   ADD_DECK_CARD,
   UPDATE_SCORE,
+  UPDATE_TIMES_QUIZZED,
 } from '../actions'
 import initialState from './initial-state'
 import quiz from './quiz'
@@ -40,6 +41,17 @@ function deck(state = initialState.deck, action) {
           ...state.quiz,
           score: action.score,
         }
+      }
+    case UPDATE_TIMES_QUIZZED:
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [action.key]: {
+            ...state.decks[action.key],
+            timesQuizzed: action.timesQuizzed,
+          }
+        },
       }
     default:
       return state

@@ -6,6 +6,7 @@ import {
 
 import Decks from './components/Decks'
 import Deck from './components/Deck'
+import BarChartScreen from './components/BarChartScreen'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider, connect } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -15,10 +16,11 @@ const MainNavigator = StackNavigator({
   Main: { screen: Decks },
   Deck: {
     screen: Deck,
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: ({ navigation }) => ({
       headerTitle: `${navigation.state.params.deck.name}`,
     }),
-  }
+  },
+  BarChartScreen: { screen: BarChartScreen }
 });
 
 const store = createStore(

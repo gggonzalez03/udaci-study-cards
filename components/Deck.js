@@ -4,7 +4,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
 import EndQuizMessage from './EndQuizMessage'
-import { updateScore } from '../actions'
+import { updateScore, updateTimesQuizzed } from '../actions'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
 
@@ -47,30 +47,36 @@ class Deck extends Component {
     this.cardList.scrollToIndex({ animated: true, index: "" + index });
   }
   correctPressed = () => {
+    let deckKey = this.props.navigation.state.params.deck.id
+    let timesQuizzed = this.props.navigation.state.params.deck.timesQuizzed
     // Only move to the next card if there is a next card
     // This will prevent out of bounds error or exception
-    if (this.state.nextFocusIndex < this.props.decks[this.props.navigation.state.params.deck.id].cards.length) {
+    if (this.state.nextFocusIndex < this.props.decks[deckKey].cards.length) {
       this.scrollToIndex(this.state.nextFocusIndex)
       this.setState(state => ({
         nextFocusIndex: state.nextFocusIndex + 1
       }))
     }
     else {
+      this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
       this.setEndQuizMessageVisible(true)
     }
 
     this.props.updateScore(this.props.quiz.score + 1)
   }
   incorrectPressed = () => {
+    let deckKey = this.props.navigation.state.params.deck.id
+    let timesQuizzed = this.props.navigation.state.params.deck.timesQuizzed
     // Only move to the next card if there is a next card
     // This will prevent out of bounds error or exception
-    if (this.state.nextFocusIndex < this.props.decks[this.props.navigation.state.params.deck.id].cards.length) {
+    if (this.state.nextFocusIndex < this.props.decks[deckKey].cards.length) {
       this.scrollToIndex(this.state.nextFocusIndex)
       this.setState(state => ({
         nextFocusIndex: state.nextFocusIndex + 1
       }))
     }
     else {
+      this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
       this.setEndQuizMessageVisible(true)
     }
   }
@@ -170,6 +176,7 @@ const mapStateToProps = ({ deck, quiz }) => {
 const mapDispatchToProps = dispatch => {
   return {
     updateScore: (score) => dispatch(updateScore(score)),
+    updateTimesQuizzed: (key, timesQuizzed) => dispatch(updateTimesQuizzed(key, timesQuizzed)),
   }
 }
 

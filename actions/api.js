@@ -14,7 +14,8 @@ export function addDeck(deckName) {
     id: key,
     name: deckName,
     cards: [{ cardCover: true }], // Automatically add the cover card as soon as the deck is created
-    color: Object.entries(colors)[Math.floor(Math.random() * (Object.values(colors).length - 1))][0] // Get a random color from colors
+    color: Object.entries(colors)[Math.floor(Math.random() * (Object.values(colors).length - 1))][0], // Get a random color from colors
+    timesQuizzed: 0,
   }
   AsyncStorage.setItem(key, JSON.stringify(deck))
 
@@ -34,6 +35,7 @@ export function getDecks() {
           name: JSON.parse(deck[1]).name,
           cards: JSON.parse(deck[1]).cards,
           color: JSON.parse(deck[1]).color,
+          timesQuizzed: JSON.parse(deck[1]).timesQuizzed,
         }
       })
 
@@ -69,4 +71,23 @@ export function addDeckCard(key, card) {
         resolve({ key: key, card: card })
       })
     })
+}
+
+export function updateTimesQuizzed(key, timesQuizzed) {
+  return AsyncStorage.getItem(key, (err, deck) => deck)
+  .then(deck => {
+
+    // Format back to string to conform with mergeItem
+    AsyncStorage.mergeItem(key, JSON.stringify({timesQuizzed: timesQuizzed}))
+
+
+    // Return a promuse to be resolved by outside callers
+    return new Promise((resolve, reject) => {
+      /**
+       * TODO:
+       * Add conditions and rejection
+       */
+      resolve({ key: key, timesQuizzed: timesQuizzed })
+    })
+  })
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, TextInput } from 'react-native'
-import { MaterialCommunityIcons, Ionicons, Octicons, Entypo } from '@expo/vector-icons'
+import { MaterialCommunityIcons, Ionicons, Octicons, Entypo, Foundation } from '@expo/vector-icons'
 import Tile from './Tile'
 import AddDeckForm from './AddDeckForm'
 import colors from '../helpers/colors'
@@ -20,7 +20,13 @@ class Decks extends Component {
         onPress={() => navigation.state.params.setAddDeckFormVisible(true)}
       >
         <Entypo name='plus' size={28} style={{ backgroundColor: 'transparent', margin: 8 }} />
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>,
+      headerLeft:
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate('BarChartScreen')}
+      >
+        <Foundation name='graph-bar' size={28} style={{ backgroundColor: 'transparent', margin: 8 }} />
+      </TouchableWithoutFeedback>,
     }
   }
   componentWillMount = () => {
