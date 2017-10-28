@@ -1,7 +1,9 @@
 import { AsyncStorage } from 'react-native'
+import { Notifications, Permissions } from 'expo'
 import colors from '../helpers/colors'
 
 const STORE = 'UdaciStudyCards'
+const NOTIFICATION = 'UdaciStudyCards:notification'
 
 function generateID() {
   return Math.random().toString(36).substr(2, 16)
@@ -90,4 +92,62 @@ export function updateTimesQuizzed(key, timesQuizzed) {
       resolve({ key: key, timesQuizzed: timesQuizzed })
     })
   })
+}
+
+export function clearLocalNotification () {
+  return AsyncStorage.removeItem(NOTIFICATION)
+    .then(Notifications.cancelAllScheduledNotificationsAsync())
+}
+
+// Return an object to use for notification creation
+function createNotification () {
+  return {
+    title: 'Take a quiz!',
+    body: "👋 don't forget to refresh your memory!",
+    ios: {
+      sound: true,
+    },
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  }
+}
+
+export function setLocalNotification () {
+  return AsyncStorage.getItem(NOTIFICATION)
+    .then(JSON.parse)
+    .then((data) => {
+      /**
+       * Only if there is no notification set for the day:
+       * Ask for permission
+       * Clear notifications just in case
+       * Then set a new notification for the next day
+       */
+      if (data === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({ status }) => {
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync()
+
+              let tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(20)
+              tomorrow.setMinutes(0)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day',
+                }
+              )
+
+              AsyncStorage.setItem(NOTIFICATION, JSON.stringify(true))
+            }
+          })
+      }
+    })
 }

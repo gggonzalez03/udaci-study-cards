@@ -4,7 +4,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import Card from './Card'
 import AddCardForm from './AddCardForm'
 import EndQuizMessage from './EndQuizMessage'
-import { updateScore, updateTimesQuizzed } from '../actions'
+import { clearLocalNotification, setLocalNotification } from '../actions/api'
 import colors from '../helpers/colors'
 import { connect } from 'react-redux'
 
@@ -59,6 +59,9 @@ class Deck extends Component {
     }
     else {
       this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
+      // Clear notification for today and set up a new one for tomorrow
+      clearLocalNotification()
+      .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
 
@@ -77,6 +80,9 @@ class Deck extends Component {
     }
     else {
       this.props.updateTimesQuizzed(deckKey, timesQuizzed + 1)
+      // Clear notification for today and set up a new one for tomorrow
+      clearLocalNotification()
+      .then(setLocalNotification())
       this.setEndQuizMessageVisible(true)
     }
   }
