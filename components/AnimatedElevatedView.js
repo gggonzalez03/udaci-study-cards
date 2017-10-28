@@ -1,3 +1,10 @@
+/**
+ * This component is copied and improved from react-native-elevated-view package
+ * from npm.
+ * The original package will cause a warning about proptypes.
+ */
+
+
 import React, { Component } from 'react'
 import { View, Platform, Animated } from 'react-native'
 

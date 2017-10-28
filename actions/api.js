@@ -94,6 +94,8 @@ export function updateTimesQuizzed(key, timesQuizzed) {
   })
 }
 
+// Notification functions are copied and modified from
+// Udacity lessons.
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(NOTIFICATION)
     .then(Notifications.cancelAllScheduledNotificationsAsync())
